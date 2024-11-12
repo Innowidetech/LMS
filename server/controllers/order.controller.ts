@@ -56,7 +56,7 @@ export const createOrder = CatchAsyncError(
           _id: String(course._id).slice(0, 6),
           name: course.name,
           price: course.price,
-          data: new Date().toLocaleDateString("en-US", {
+          date: new Date().toLocaleDateString("en-US", {
             year: "numeric",
             month: "long",
             day: "numeric",
@@ -83,12 +83,8 @@ export const createOrder = CatchAsyncError(
             return next(new ErrorHandler(error.message,500));
 
        }
-       if (user && user.courses) {
-        user.courses.push(course?._id as string); // or adjust according to your type
-      }
-
-        // await redis.set(req.user?._id, JSON.stringify(user));
-
+    
+       user?.courses.push({ courseId: String(course?._id) }); 
         await user?.save();
 
          await NotificationModel.create({

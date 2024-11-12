@@ -12,7 +12,6 @@ const orderSchema  = new Schema <IOrder>({
     courseId:{
         type:String,
         required:true
-
     },
 
     userId:{
