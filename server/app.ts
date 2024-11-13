@@ -27,7 +27,6 @@ app.use(
 );
 
 //routes
-// app.use("/api/v1", userRouter,courseRouter);
 app.use("/api/v1", userRouter,orderRouter,courseRouter,notificationRoute,analyticsRouter,layoutRouter);
 
 
