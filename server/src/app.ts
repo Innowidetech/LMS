@@ -3,13 +3,13 @@ import express, { Request, Response, NextFunction } from "express";
 export const app = express();
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import { ErrorMiddleware } from "./middleware/error";
-import userRouter from "./routes/user.route";
-import courseRouter from "./routes/course.route";
-import orderRouter from "./routes/order.route";
-import notificationRoute from "./routes/notification.route";
-import analyticsRouter from "./routes/analytics.route";
-import layoutRouter from "./routes/layout.route";
+import { ErrorMiddleware } from "./src/middleware/error";
+import userRouter from "./src/routes/user.route";
+import courseRouter from "./src/routes/course.route";
+import orderRouter from "./src/routes/order.route";
+import notificationRoute from "./src/routes/notification.route";
+import analyticsRouter from "./src/routes/analytics.route";
+import layoutRouter from "./src/routes/layout.route";
 // import ErrorHandler from "./utils/ErrorHandler";
 
 
