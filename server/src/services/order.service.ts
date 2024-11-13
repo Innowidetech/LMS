@@ -1,6 +1,6 @@
 import { NextFunction, Response } from "express";
-import { CatchAsyncError } from "../src/middleware/catchAsyncErrors";
-import OrderModel from "../src/models/order.Model";
+import { CatchAsyncError } from "../middleware/catchAsyncErrors";
+import OrderModel from "../models/order.Model";
 
 
 // create new order 

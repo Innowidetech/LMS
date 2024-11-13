@@ -10,7 +10,6 @@ import path from "path";
 import ejs from "ejs";
 import sendMail from "../utils/sendMail";
 import NotificationModel from "../models/notificationModel";
-import { ICourse } from "../models/course.model";
 import { IUser } from "../models/user.model";
 
 // // upload course
