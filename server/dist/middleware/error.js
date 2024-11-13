@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ErrorMiddleware = void 0;
-const ErrorHandler_1 = __importDefault(require("../../src/utils/ErrorHandler"));
+const ErrorHandler_1 = __importDefault(require("../../dist/utils/ErrorHandler"));
 const ErrorMiddleware = (err, req, res, next) => {
     err.statusCode = err.statusCode || 500;
     err.message = err.message || 'Internal server error';

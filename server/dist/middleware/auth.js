@@ -14,9 +14,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.authorizeRoles = exports.isAuthenticated = void 0;
 const catchAsyncErrors_1 = require("./catchAsyncErrors");
-const ErrorHandler_1 = __importDefault(require("../../src/utils/ErrorHandler"));
+const ErrorHandler_1 = __importDefault(require("../../dist/utils/ErrorHandler"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const redis_1 = require("../../src/utils/redis");
+const redis_1 = require("../../dist/utils/redis");
 // isAuthenticated middleware
 exports.isAuthenticated = (0, catchAsyncErrors_1.CatchAsyncError)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const access_token = req.cookies.access_token;
