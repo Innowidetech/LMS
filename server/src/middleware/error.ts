@@ -1,4 +1,4 @@
-import ErrorHandler from "../../src/utils/ErrorHandler";
+import ErrorHandler from "../utils/ErrorHandler";
 import { NextFunction, Request, Response } from "express";
 
 export const ErrorMiddleware = (
