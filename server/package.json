@@ -3,10 +3,7 @@
   "version": "1.0.0",
   "description": "An LMS Project",
   "type":"commonjs",
-  "main": "build/server.js", 
-  "engines":{
-    "node":"18.x"
-  },
+  "main": "build/server.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only server.ts",
     "build": "tsc",
