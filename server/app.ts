@@ -10,7 +10,7 @@ import orderRouter from "./routes/order.route";
 import notificationRoute from "./routes/notification.route";
 import analyticsRouter from "./routes/analytics.route";
 import layoutRouter from "./routes/layout.route";
-import { rateLimit } from 'express-rate-limit';
+import rateLimit from 'express-rate-limit';
 
 
 // Body parser
@@ -33,7 +33,7 @@ const limiter = rateLimit({
   max: 100,
   standardHeaders: 'draft-7',
   legacyHeaders: false,
-})
+});
 
 //routes
 app.use("/api/v1", userRouter, orderRouter, courseRouter, notificationRoute, analyticsRouter, layoutRouter);
