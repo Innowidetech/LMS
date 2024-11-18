@@ -10,7 +10,7 @@ import orderRouter from "./routes/order.route";
 import notificationRoute from "./routes/notification.route";
 import analyticsRouter from "./routes/analytics.route";
 import layoutRouter from "./routes/layout.route";
-import rateLimit from 'express-rate-limit';
+import { rateLimit } from 'express-rate-limit';
 
 
 // Body parser
@@ -22,20 +22,21 @@ app.use(cookieParser());
 // CORS => Cross-Origin Resource Sharing
 app.use(
   cors({
-    origin: ['http://localhost:3000/','https://lms-portal-0.web.app/'],
+    origin: ['http://localhost:3000/', 'https://lms-portal-0.web.app/'],
+    credentials: true,
   })
 );
 
 //api request limit
 const limiter = rateLimit({
-	windowMs: 15 * 60 * 1000,
-	limit: 100,
-	standardHeaders: 'draft-7', 
-	legacyHeaders: false, 
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
 })
 
 //routes
-app.use("/api/v1", userRouter,orderRouter,courseRouter,notificationRoute,analyticsRouter,layoutRouter);
+app.use("/api/v1", userRouter, orderRouter, courseRouter, notificationRoute, analyticsRouter, layoutRouter);
 
 
 // TESTING API
@@ -54,5 +55,5 @@ app.all("*", (req: Request, res: Response, next: NextFunction) => {
 });
 
 //middleware calls
-app.use(limiter)
+app.use(limiter);
 app.use(ErrorMiddleware);
