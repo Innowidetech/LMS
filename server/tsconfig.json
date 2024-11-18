@@ -114,12 +114,6 @@
     /* Completeness */
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
     "skipLibCheck": true,
-    },
-    "include": [
-      "C:/Users/dell/Downloads/LMS/server/**/*.ts"
-    ] ,
-    "exclude": [
-      "node_modules"  // exclude node_modules folder to prevent unnecessary checks
-    ]                                /* Skip type checking all .d.ts files. */
+    }                              /* Skip type checking all .d.ts files. */
   }
 
