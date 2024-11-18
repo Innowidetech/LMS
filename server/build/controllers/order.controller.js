@@ -1,13 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -26,31 +17,30 @@ const redis_1 = require("../utils/redis");
 require("dotenv").config();
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 // create order
-exports.createOrder = (0, catchAsyncErrors_1.CatchAsyncError)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b;
+exports.createOrder = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     try {
         const { courseId, payment_info } = req.body;
         if (payment_info) {
             if ("id" in payment_info) {
                 const paymentIntentId = payment_info.id;
-                const paymentIntent = yield stripe.paymentIntents.retrieve(paymentIntentId);
+                const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
                 if (paymentIntent.status !== "succeeded") {
                     return next(new ErrorHandler_1.default("Payment not authorized!", 400));
                 }
             }
         }
-        const user = yield user_model_1.default.findById((_a = req.user) === null || _a === void 0 ? void 0 : _a._id);
-        const courseExistInUser = user === null || user === void 0 ? void 0 : user.courses.some((course) => course._id.toString() === courseId);
+        const user = await user_model_1.default.findById(req.user?._id);
+        const courseExistInUser = user?.courses.some((course) => course._id.toString() === courseId);
         if (courseExistInUser) {
             return next(new ErrorHandler_1.default("You have alredy purchased this course", 400));
         }
-        const course = yield course_model_1.default.findById(courseId);
+        const course = await course_model_1.default.findById(courseId);
         if (!course) {
             return next(new ErrorHandler_1.default("Course not found ", 404));
         }
         const data = {
             courseId: course._id,
-            userId: user === null || user === void 0 ? void 0 : user._id,
+            userId: user?._id,
             payment_info,
         };
         const mailData = {
@@ -65,10 +55,10 @@ exports.createOrder = (0, catchAsyncErrors_1.CatchAsyncError)((req, res, next) =
                 }),
             },
         };
-        const html = yield ejs_1.default.renderFile(path_1.default.join(__dirname, "../mails/order-confirmation.ejs"), { order: mailData });
+        const html = await ejs_1.default.renderFile(path_1.default.join(__dirname, "../mails/order-confirmation.ejs"), { order: mailData });
         try {
             if (user) {
-                yield (0, sendMail_1.default)({
+                await (0, sendMail_1.default)({
                     email: user.email,
                     subject: "Course Order Confirmation from LMS",
                     template: "order-confirmation.ejs",
@@ -79,41 +69,41 @@ exports.createOrder = (0, catchAsyncErrors_1.CatchAsyncError)((req, res, next) =
         catch (error) {
             return next(new ErrorHandler_1.default(error.message, 500));
         }
-        user === null || user === void 0 ? void 0 : user.courses.push({ courseId: String(course === null || course === void 0 ? void 0 : course._id) });
-        yield redis_1.redis.set((_b = req.user) === null || _b === void 0 ? void 0 : _b._id, JSON.stringify(user));
-        yield (user === null || user === void 0 ? void 0 : user.save());
-        yield notificationModel_1.default.create({
-            user: user === null || user === void 0 ? void 0 : user._id,
+        user?.courses.push({ courseId: String(course?._id) });
+        await redis_1.redis.set(req.user?._id, JSON.stringify(user));
+        await user?.save();
+        await notificationModel_1.default.create({
+            user: user?._id,
             title: "New Order",
-            message: `You have a new order from ${course === null || course === void 0 ? void 0 : course.name}`,
+            message: `You have a new order from ${course?.name}`,
         });
         course.purchased = course.purchased + 1;
-        yield course.save();
+        await course.save();
         (0, order_service_1.newOrder)(data, res, next);
     }
     catch (error) {
         return next(new ErrorHandler_1.default(error.message, 500));
     }
-}));
+});
 // get All orders ---- only for admin
-exports.getAllOrders = (0, catchAsyncErrors_1.CatchAsyncError)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getAllOrders = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     try {
         (0, order_service_1.getAllOrdersService)(res);
     }
     catch (error) {
         return next(new ErrorHandler_1.default(error.message, 500));
     }
-}));
+});
 //send stripe publishable key
-exports.sendStripePublishableKey = (0, catchAsyncErrors_1.CatchAsyncError)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.sendStripePublishableKey = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res) => {
     res.status(200).json({
         publishableKey: process.env.STRIPE_PUBLISHABLE_KEY
     });
-}));
+});
 // //NEW PAYMENT
-exports.newPayment = (0, catchAsyncErrors_1.CatchAsyncError)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+exports.newPayment = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     try {
-        const mypayment = yield stripe.paymentIntents.create({
+        const mypayment = await stripe.paymentIntents.create({
             amount: req.body.amount,
             currency: "USD",
             metadata: {
@@ -131,4 +121,4 @@ exports.newPayment = (0, catchAsyncErrors_1.CatchAsyncError)((req, res, next) =>
     catch (error) {
         return next(new ErrorHandler_1.default(error.message, 500));
     }
-}));
+});

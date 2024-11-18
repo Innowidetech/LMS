@@ -23,12 +23,13 @@ exports.app.use(express_1.default.json({ limit: "50mb" }));
 exports.app.use((0, cookie_parser_1.default)());
 // CORS => Cross-Origin Resource Sharing
 exports.app.use((0, cors_1.default)({
-    origin: ['http://localhost:3000/', 'https://lms-portal-0.web.app/'],
+    origin: ['http://localhost:3000', 'https://lms-portal-0.web.app'],
+    credentials: true,
 }));
 //api request limit
 const limiter = (0, express_rate_limit_1.rateLimit)({
     windowMs: 15 * 60 * 1000,
-    limit: 100,
+    max: 100,
     standardHeaders: 'draft-7',
     legacyHeaders: false,
 });

@@ -1,13 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -16,8 +7,8 @@ exports.updateUserRoleService = exports.getAllUsersService = exports.getUserById
 const user_model_1 = __importDefault(require("../models/user.model"));
 const redis_1 = require("../utils/redis");
 //get user by id
-const getUserById = (id, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const userJson = yield redis_1.redis.get(id);
+const getUserById = async (id, res) => {
+    const userJson = await redis_1.redis.get(id);
     if (userJson) {
         const user = JSON.parse(userJson);
         res.status(201).json({
@@ -25,25 +16,25 @@ const getUserById = (id, res) => __awaiter(void 0, void 0, void 0, function* () 
             user,
         });
     }
-});
+};
 exports.getUserById = getUserById;
 //Get all Users
-const getAllUsersService = () => __awaiter(void 0, void 0, void 0, function* () {
+const getAllUsersService = async () => {
     try {
-        const users = yield user_model_1.default.find().sort({ createdAt: -1 }); // Fetch all users
+        const users = await user_model_1.default.find().sort({ createdAt: -1 }); // Fetch all users
         return users; // Return the fetched users
     }
     catch (error) {
         throw new Error('Error fetching users');
     }
-});
+};
 exports.getAllUsersService = getAllUsersService;
 //update user role
-const updateUserRoleService = (res, id, role) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield user_model_1.default.findByIdAndUpdate(id, { role }, { new: true });
+const updateUserRoleService = async (res, id, role) => {
+    const user = await user_model_1.default.findByIdAndUpdate(id, { role }, { new: true });
     res.status(201).json({
         success: true,
         user,
     });
-});
+};
 exports.updateUserRoleService = updateUserRoleService;

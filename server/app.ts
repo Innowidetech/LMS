@@ -22,7 +22,7 @@ app.use(cookieParser());
 // CORS => Cross-Origin Resource Sharing
 app.use(
   cors({
-    origin: ['http://localhost:3000/', 'https://lms-portal-0.web.app/'],
+    origin: ['http://localhost:3000', 'https://lms-portal-0.web.app'],
     credentials: true,
   })
 );
