@@ -22,16 +22,9 @@ const sendMail = async (options:EmailOptions):Promise<void> =>{
     });
     const{email,subject,template,data} = options;
 
-
-    // get the path to the email templete file
-
     const templatePath = path.join(__dirname,'../mails',template);
 
-    //Render the email templete with EJS
-
     const html:string = await ejs.renderFile(templatePath,data);
-
-    // send the email
 
     const mailOptions ={
         from:process.env.SMTP_MAIL,
