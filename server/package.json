@@ -12,7 +12,6 @@
   "author": "Bal Krishna Pandey",
   "license": "ISC",
   "dependencies": {
-    "@types/axios": "^0.9.36",
     "@types/bcryptjs": "^2.4.6",
     "@types/cookie-parser": "^1.4.7",
     "@types/cors": "^2.8.17",
@@ -45,6 +44,6 @@
     "@types/nodemailer": "^6.4.15",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.6.3"
+    "typescript": "^5.7.2"
   }
 }
