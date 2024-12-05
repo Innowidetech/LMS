@@ -27,11 +27,8 @@ const sendMail = (options) => __awaiter(void 0, void 0, void 0, function* () {
         }
     });
     const { email, subject, template, data } = options;
-    // get the path to the email templete file
     const templatePath = path_1.default.join(__dirname, '../mails', template);
-    //Render the email templete with EJS
     const html = yield ejs_1.default.renderFile(templatePath, data);
-    // send the email
     const mailOptions = {
         from: process.env.SMTP_MAIL,
         to: email,
